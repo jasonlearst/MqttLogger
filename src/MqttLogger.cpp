@@ -1,7 +1,7 @@
 #include "MqttLogger.h"
 #include "Arduino.h"
 
-MqttLogger::MqttLogger(PubSubClient& client, const char* topic, MqttLoggerMode mode)
+MqttLogger::MqttLogger(MQTT& client, const char* topic, MqttLoggerMode mode)
 {
     this->client = &client;
     this->topic = topic;
@@ -52,7 +52,7 @@ void MqttLogger::sendBuffer()
     if (this->bufferCnt > 0)
     {
         bool doSerial = this->mode==MqttLoggerMode::SerialOnly || this->mode==MqttLoggerMode::MqttAndSerial; 
-        if (this->mode!=MqttLoggerMode::SerialOnly && this->client->connected()) 
+        if (this->mode!=MqttLoggerMode::SerialOnly && this->client->isConnected()) 
         {
             this->client->publish(this->topic, (byte *)this->buffer, this->bufferCnt, 1);
         } else if (this->mode == MqttLoggerMode::MqttAndSerialFallback)

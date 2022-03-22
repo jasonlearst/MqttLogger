@@ -11,7 +11,7 @@
 
 #include <Arduino.h>
 #include <Print.h>
-#include <PubSubClient.h>
+#include <MQTT.h>
 
 enum MqttLoggerMode {
     MqttAndSerialFallback = 0,
@@ -27,12 +27,12 @@ private:
     uint8_t* buffer;
     uint8_t* bufferEnd;
     uint16_t bufferCnt = 0, bufferSize = 0;
-    PubSubClient* client;
+    MQTT* client;
     MqttLoggerMode mode;
     void sendBuffer();
 
 public:
-    MqttLogger(PubSubClient& client, const char* topic, MqttLoggerMode mode=MqttLoggerMode::MqttAndSerialFallback); // constructor & destructor
+    MqttLogger(MQTT& client, const char* topic, MqttLoggerMode mode=MqttLoggerMode::MqttAndSerialFallback); // constructor & destructor
     ~MqttLogger();
     virtual size_t write(uint8_t);
     uint16_t getBufferSize();
